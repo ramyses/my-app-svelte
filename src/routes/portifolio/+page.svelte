@@ -1,51 +1,70 @@
+<script lang="ts">
+import { page } from '$app/stores';
+
+    //const items = $page.data.items
+    export let data;
+    
+    let currentCategory: String = 'Todos'
+    let portfolioItems = data.items;
+
+    function changeCategory(newCategory: String){
+        currentCategory = newCategory;
+        filterPortfolio();
+    }
+
+    function filterPortfolio(){
+        portfolioItems = data.items.filter(item => {
+            return item.category === currentCategory || currentCategory === 'Todos';
+        })
+    }
+</script>
+
+<section class="bg-white dark:bg-gray-900">
+    <div class="container px-6 mx-auto">
+        
+
+
+        <div class="flex py-4 mt-4 overflow-x-auto overflow-y-hidden md:justify-center dark:border-gray-700">
+           {#each data.categories as category}
+                {#if currentCategory === category}
+                    <button
+                    
+                        class="h-12 px-8 py-2 -mb-px text-sm text-center text-blue-600 bg-transparent border-b-2 border-blue-500 sm:text-base dark:border-blue-400 dark:text-blue-300 whitespace-nowrap focus:outline-none">
+                        {category}
+                    </button>
+                {:else}
+                    <button
+                        on:click={
+                            () => {changeCategory(category)}
+                        }
+                        class="h-12 px-8 py-2 -mb-px text-sm text-center text-blue-600 bg-transparent border-b-2 border-blue-500 sm:text-base dark:border-blue-400 dark:text-blue-300 whitespace-nowrap focus:outline-none">
+                        {category}
+                    </button>
+                {/if}
+           {/each}     
 
             
-<section class="bg-white dark:bg-gray-900">
-    <div class="container px-6 py-12 mx-auto">
-        <h1 class="text-2xl font-semibold text-gray-800 lg:text-3xl dark:text-white">Portfolio</h1>
-
-        <div class="mt-8 xl:mt-16 lg:flex lg:-mx-12">
-            <div class="lg:mx-12">
-                <h1 class="text-xl font-semibold text-gray-800 dark:text-white">Table of Content</h1>
-
-                <div class="mt-4 space-y-4 lg:mt-8">
-                    <a href="#" class="block text-blue-500 dark:text-blue-400 hover:underline">Web design</a>
-                    <a href="#" class="block text-gray-500 dark:text-gray-300 hover:underline">App design</a>
-                    <a href="#" class="block text-gray-500 dark:text-gray-300 hover:underline">Branding</a>
-                    <a href="#" class="block text-gray-500 dark:text-gray-300 hover:underline">Animation</a>
-                </div>
-            </div>
-
-            <div class="flex-1 mt-8 lg:mx-12 lg:mt-0">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3 ">
-                    <div>
-                        <img class="object-cover w-full rounded-lg h-96 "
-                            src="https://images.unsplash.com/photo-1621111848501-8d3634f82336?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1565&q=80"
-                            alt="">
-                        <h2 class="mt-4 text-xl font-semibold text-gray-800 capitalize dark:text-white">Best website
-                            collections</h2>
-                        <p class="mt-2 text-lg tracking-wider text-blue-500 uppercase dark:text-blue-400 ">Website</p>
-                    </div>
-
-                    <div>
-                        <img class="object-cover w-full rounded-lg h-96 "
-                            src="https://images.unsplash.com/photo-1621609764180-2ca554a9d6f2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-                            alt="">
-                        <h2 class="mt-4 text-xl font-semibold text-gray-800 capitalize dark:text-white">Block of Ui kit
-                            collections</h2>
-                        <p class="mt-2 text-lg tracking-wider text-blue-500 uppercase dark:text-blue-400 ">Ui kit</p>
-                    </div>
-
-                    <div>
-                        <img class="object-cover w-full rounded-lg h-96 "
-                            src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                            alt="">
-                        <h2 class="mt-4 text-xl font-semibold text-gray-800 capitalize dark:text-white">Ton’s of mobile
-                            mockup</h2>
-                        <p class="mt-2 text-lg tracking-wider text-blue-500 uppercase dark:text-blue-400 ">Mockups</p>
-                    </div>
-                </div>
-            </div>
         </div>
+        
+       
+        <section class="mt-8 space-y-8 lg:mt-12">
+            {#each portfolioItems as {slug, title,category,image}}
+            <section class="lg:flex lg:items-center">
+                <div class="lg:w-1/2 ">
+                    <p class="text-lg tracking-wider text-blue-500 uppercase dark:text-blue-400 ">{category}</p>
+                    <h2 class="mt-2 text-2xl font-semibold text-gray-800 capitalize dark:text-white">{title}</h2>
+                </div>
+    
+                <div class="mt-4 lg:w-1/2 lg:mt-0">
+                   <a href={`/portifolio/${slug}`}>
+                        <img class="object-cover w-full h-64 rounded-lg md:h-96"
+                        src={image}
+                        alt="">
+                   </a>
+                </div>
+            </section>
+            {/each}
+            
+        </section>
     </div>
 </section>
